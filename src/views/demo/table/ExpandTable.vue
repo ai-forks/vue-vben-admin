@@ -1,8 +1,5 @@
 <template>
-  <PageWrapper
-    title="可展开表格"
-    content="TableAction组件可配置stopButtonPropagation来阻止操作按钮的点击事件冒泡，以便配合Table组件的expandRowByClick"
-  >
+  <PageWrapper title="可展开表格" content="TableAction组件可配置stopButtonPropagation来阻止操作按钮的点击事件冒泡，以便配合Table组件的expandRowByClick">
     <BasicTable @register="registerTable">
       <template #expandedRowRender="{ record }">
         <span>No: {{ record.no }} </span>
@@ -34,44 +31,44 @@
   </PageWrapper>
 </template>
 <script lang="ts">
-  import { defineComponent } from 'vue';
-  import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { PageWrapper } from '/@/components/Page';
-  import { getBasicColumns } from './tableData';
+import { defineComponent } from "vue";
+import { BasicTable, useTable, TableAction } from "/@/components/Table";
+import { PageWrapper } from "/@/components/Page";
+import { getBasicColumns } from "./tableData";
 
-  import { demoListApi } from '/@/api/demo/table';
+import { demoListApi } from "/@/api/demo/table";
 
-  export default defineComponent({
-    components: { BasicTable, TableAction, PageWrapper },
-    setup() {
-      const [registerTable] = useTable({
-        api: demoListApi,
-        title: '可展开表格演示',
-        titleHelpMessage: ['已启用expandRowByClick', '已启用stopButtonPropagation'],
-        columns: getBasicColumns(),
-        rowKey: 'id',
-        canResize: false,
-        expandRowByClick: true,
-        actionColumn: {
-          width: 160,
-          title: 'Action',
-          dataIndex: 'action',
-          fixed: 'right',
-          // slots: { customRender: 'action' },
-        },
-      });
-      function handleDelete(record: Recordable) {
-        console.log('点击了删除', record);
-      }
-      function handleOpen(record: Recordable) {
-        console.log('点击了启用', record);
-      }
+export default defineComponent({
+  components: { BasicTable, TableAction, PageWrapper },
+  setup() {
+    const [registerTable] = useTable({
+      api: demoListApi,
+      title: "可展开表格演示",
+      titleHelpMessage: ["已启用expandRowByClick", "已启用stopButtonPropagation"],
+      columns: getBasicColumns(),
+      rowKey: "id",
+      canResize: false,
+      expandRowByClick: true,
+      actionColumn: {
+        width: 160,
+        title: "Action",
+        dataIndex: "action",
+        fixed: "right",
+        // slots: { customRender: 'action' },
+      },
+    });
+    function handleDelete(record: Recordable) {
+      console.log("点击了删除", record);
+    }
+    function handleOpen(record: Recordable) {
+      console.log("点击了启用", record);
+    }
 
-      return {
-        registerTable,
-        handleDelete,
-        handleOpen,
-      };
-    },
-  });
+    return {
+      registerTable,
+      handleDelete,
+      handleOpen,
+    };
+  },
+});
 </script>

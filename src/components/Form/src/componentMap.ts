@@ -58,11 +58,11 @@ componentMap.set("Upload", BasicUpload);
 componentMap.set("Divider", Divider);
 
 export function add(compName: ComponentType, component: Component) {
-   componentMap.set(compName, component);
+  componentMap.set(compName, component);
 }
 
 export function del(compName: ComponentType) {
-   componentMap.delete(compName);
+  componentMap.delete(compName);
 }
 
 export { componentMap };

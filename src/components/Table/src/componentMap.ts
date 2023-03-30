@@ -20,11 +20,11 @@ componentMap.set("RadioButtonGroup", RadioButtonGroup);
 componentMap.set("ApiRadioGroup", ApiRadioGroup);
 
 export function add(compName: ComponentType, component: Component) {
-   componentMap.set(compName, component);
+  componentMap.set(compName, component);
 }
 
 export function del(compName: ComponentType) {
-   componentMap.delete(compName);
+  componentMap.delete(compName);
 }
 
 export { componentMap };

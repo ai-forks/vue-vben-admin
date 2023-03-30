@@ -8,31 +8,17 @@
       <Form v-else label-align="left" layout="vertical">
         <div v-for="item of baseFormItemProps" :key="item.name">
           <FormItem :label="item.label" v-if="showProps(item.exclude)">
-            <component
-              class="component-props"
-              v-bind="item.componentProps"
-              :is="item.component"
-              v-model:value="formConfig.currentItem[item.name]"
-            />
+            <component class="component-props" v-bind="item.componentProps" :is="item.component" v-model:value="formConfig.currentItem[item.name]" />
           </FormItem>
         </div>
         <div v-for="item of advanceFormItemProps" :key="item.name">
           <FormItem :label="item.label" v-if="showProps(item.exclude)">
-            <component
-              class="component-props"
-              v-bind="item.componentProps"
-              :is="item.component"
-              v-model:value="formConfig.currentItem.itemProps[item.name]"
-            />
-          </FormItem> </div
-        ><div v-for="item of advanceFormItemColProps" :key="item.name">
+            <component class="component-props" v-bind="item.componentProps" :is="item.component" v-model:value="formConfig.currentItem.itemProps[item.name]" />
+          </FormItem>
+        </div>
+        <div v-for="item of advanceFormItemColProps" :key="item.name">
           <FormItem :label="item.label" v-if="showProps(item.exclude)">
-            <component
-              class="component-props"
-              v-bind="item.componentProps"
-              :is="item.component"
-              v-model:value="formConfig.currentItem.itemProps[item.name]['span']"
-            />
+            <component class="component-props" v-bind="item.componentProps" :is="item.component" v-model:value="formConfig.currentItem.itemProps[item.name]['span']" />
           </FormItem>
         </div>
         <FormItem label="控制属性" v-if="controlPropsList.length">
@@ -44,17 +30,9 @@
         </FormItem>
         <FormItem label="是否必选" v-if="!['Grid'].includes(formConfig.currentItem.component)">
           <Switch v-model:checked="formConfig.currentItem.itemProps['required']" />
-          <Input
-            v-if="formConfig.currentItem.itemProps['required']"
-            v-model:value="formConfig.currentItem.itemProps['message']"
-            placeholder="请输入必选提示"
-          />
+          <Input v-if="formConfig.currentItem.itemProps['required']" v-model:value="formConfig.currentItem.itemProps['message']" placeholder="请输入必选提示" />
         </FormItem>
-        <FormItem
-          v-if="!['Grid'].includes(formConfig.currentItem.component)"
-          label="校验规则"
-          :class="{ 'form-rule-props': !!formConfig.currentItem.itemProps['rules'] }"
-        >
+        <FormItem v-if="!['Grid'].includes(formConfig.currentItem.component)" label="校验规则" :class="{ 'form-rule-props': !!formConfig.currentItem.itemProps['rules'] }">
           <RuleProps />
         </FormItem>
       </Form>
@@ -62,15 +40,18 @@
   </div>
 </template>
 <script lang="ts">
-  import { computed, defineComponent, watch } from 'vue';
-  import {
-    baseFormItemControlAttrs,
-    baseFormItemProps,
-    advanceFormItemProps,
-    advanceFormItemColProps,
-  } from '../../VFormDesign/config/formItemPropsConfig';
+import { computed, defineComponent, watch } from "vue";
+import { baseFormItemControlAttrs, baseFormItemProps, advanceFormItemProps, advanceFormItemColProps } from "../../VFormDesign/config/formItemPropsConfig";
 
-  import {
+import { Empty, Input, Form, FormItem, Switch, Checkbox, Select, Slider, Col, RadioGroup } from "ant-design-vue";
+import RuleProps from "./RuleProps.vue";
+import { useFormDesignState } from "../../../hooks/useFormDesignState";
+import { isArray } from "lodash-es";
+
+export default defineComponent({
+  name: "FormItemProps",
+  components: {
+    RuleProps,
     Empty,
     Input,
     Form,
@@ -81,65 +62,44 @@
     Slider,
     Col,
     RadioGroup,
-  } from 'ant-design-vue';
-  import RuleProps from './RuleProps.vue';
-  import { useFormDesignState } from '../../../hooks/useFormDesignState';
-  import { isArray } from 'lodash-es';
+  },
+  // props: {} as PropsOptions,
 
-  export default defineComponent({
-    name: 'FormItemProps',
-    components: {
-      RuleProps,
-      Empty,
-      Input,
-      Form,
-      FormItem,
-      Switch,
-      Checkbox,
-      Select,
-      Slider,
-      Col,
-      RadioGroup,
-    },
-    // props: {} as PropsOptions,
+  setup() {
+    const { formConfig } = useFormDesignState();
 
-    setup() {
-      const { formConfig } = useFormDesignState();
-
-      watch(
-        () => formConfig.value,
-        () => {
-          if (formConfig.value.currentItem) {
-            formConfig.value.currentItem.itemProps = formConfig.value.currentItem.itemProps || {};
-            formConfig.value.currentItem.itemProps.labelCol =
-              formConfig.value.currentItem.itemProps.labelCol || {};
-            formConfig.value.currentItem.itemProps.wrapperCol =
-              formConfig.value.currentItem.itemProps.wrapperCol || {};
-          }
-        },
-        { deep: true, immediate: true },
-      );
-      const showProps = (exclude: string[] | undefined) => {
-        if (!exclude) {
-          return true;
+    watch(
+      () => formConfig.value,
+      () => {
+        if (formConfig.value.currentItem) {
+          formConfig.value.currentItem.itemProps = formConfig.value.currentItem.itemProps || {};
+          formConfig.value.currentItem.itemProps.labelCol = formConfig.value.currentItem.itemProps.labelCol || {};
+          formConfig.value.currentItem.itemProps.wrapperCol = formConfig.value.currentItem.itemProps.wrapperCol || {};
         }
-        return isArray(exclude) ? !exclude.includes(formConfig.value.currentItem!.component) : true;
-      };
+      },
+      { deep: true, immediate: true },
+    );
+    const showProps = (exclude: string[] | undefined) => {
+      if (!exclude) {
+        return true;
+      }
+      return isArray(exclude) ? !exclude.includes(formConfig.value.currentItem!.component) : true;
+    };
 
-      const controlPropsList = computed(() => {
-        return baseFormItemControlAttrs.filter((item) => {
-          return showProps(item.exclude);
-        });
+    const controlPropsList = computed(() => {
+      return baseFormItemControlAttrs.filter((item) => {
+        return showProps(item.exclude);
       });
+    });
 
-      return {
-        baseFormItemProps,
-        advanceFormItemProps,
-        advanceFormItemColProps,
-        formConfig,
-        controlPropsList,
-        showProps,
-      };
-    },
-  });
+    return {
+      baseFormItemProps,
+      advanceFormItemProps,
+      advanceFormItemColProps,
+      formConfig,
+      controlPropsList,
+      showProps,
+    };
+  },
+});
 </script>

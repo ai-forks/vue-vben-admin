@@ -9,11 +9,11 @@ const { uploadUrl = "" } = useGlobSetting();
  * @description: Upload interface
  */
 export function uploadApi(params: UploadFileParams, onUploadProgress: (progressEvent: ProgressEvent) => void) {
-   return defHttp.uploadFile<UploadApiResult>(
-      {
-         url: uploadUrl,
-         onUploadProgress,
-      },
-      params,
-   );
+  return defHttp.uploadFile<UploadApiResult>(
+    {
+      url: uploadUrl,
+      onUploadProgress,
+    },
+    params,
+  );
 }

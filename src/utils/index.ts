@@ -11,7 +11,7 @@ export const noop = () => {};
  * @description:  Set ui mount node
  */
 export function getPopupContainer(node?: HTMLElement): HTMLElement {
-   return (node?.parentNode as HTMLElement) ?? document.body;
+  return (node?.parentNode as HTMLElement) ?? document.body;
 }
 
 /**
@@ -25,12 +25,12 @@ export function getPopupContainer(node?: HTMLElement): HTMLElement {
  *  ==>www.baidu.com?a=3&b=4
  */
 export function setObjToUrlParams(baseUrl: string, obj: any): string {
-   let parameters = "";
-   for (const key in obj) {
-      parameters += key + "=" + encodeURIComponent(obj[key]) + "&";
-   }
-   parameters = parameters.replace(/&$/, "");
-   return /\?$/.test(baseUrl) ? baseUrl + parameters : baseUrl.replace(/\/?$/, "?") + parameters;
+  let parameters = "";
+  for (const key in obj) {
+    parameters += key + "=" + encodeURIComponent(obj[key]) + "&";
+  }
+  parameters = parameters.replace(/&$/, "");
+  return /\?$/.test(baseUrl) ? baseUrl + parameters : baseUrl.replace(/\/?$/, "?") + parameters;
 }
 
 /**
@@ -42,74 +42,74 @@ export function setObjToUrlParams(baseUrl: string, obj: any): string {
  @returns 合并后的对象。The merged object.
  */
 export function deepMerge<T extends object | null | undefined, U extends object | null | undefined>(target: T, source: U): T & U {
-   return mergeWith(cloneDeep(target), source, (objValue, srcValue) => {
-      if (isObject(objValue) && isObject(srcValue)) {
-         return mergeWith(cloneDeep(objValue), srcValue, (prevValue, nextValue) => {
-            return isArray(prevValue) ? prevValue.concat(nextValue) : undefined;
-         });
-      }
-   });
+  return mergeWith(cloneDeep(target), source, (objValue, srcValue) => {
+    if (isObject(objValue) && isObject(srcValue)) {
+      return mergeWith(cloneDeep(objValue), srcValue, (prevValue, nextValue) => {
+        return isArray(prevValue) ? prevValue.concat(nextValue) : undefined;
+      });
+    }
+  });
 }
 
 export function openWindow(url: string, opt?: { target?: TargetContext | string; noopener?: boolean; noreferrer?: boolean }) {
-   const { target = "__blank", noopener = true, noreferrer = true } = opt || {};
-   const feature: string[] = [];
+  const { target = "__blank", noopener = true, noreferrer = true } = opt || {};
+  const feature: string[] = [];
 
-   noopener && feature.push("noopener=yes");
-   noreferrer && feature.push("noreferrer=yes");
+  noopener && feature.push("noopener=yes");
+  noreferrer && feature.push("noreferrer=yes");
 
-   window.open(url, target, feature.join(","));
+  window.open(url, target, feature.join(","));
 }
 
 // dynamic use hook props
 export function getDynamicProps<T extends Record<string, unknown>, U>(props: T): Partial<U> {
-   const ret: Recordable = {};
+  const ret: Recordable = {};
 
-   Object.keys(props).map((key) => {
-      ret[key] = unref((props as Recordable)[key]);
-   });
+  Object.keys(props).map((key) => {
+    ret[key] = unref((props as Recordable)[key]);
+  });
 
-   return ret as Partial<U>;
+  return ret as Partial<U>;
 }
 
 export function getRawRoute(route: RouteLocationNormalized): RouteLocationNormalized {
-   if (!route) return route;
-   const { matched, ...opt } = route;
-   return {
-      ...opt,
-      matched: (matched
-         ? matched.map((item) => ({
-              meta: item.meta,
-              name: item.name,
-              path: item.path,
-           }))
-         : undefined) as RouteRecordNormalized[],
-   };
+  if (!route) return route;
+  const { matched, ...opt } = route;
+  return {
+    ...opt,
+    matched: (matched
+      ? matched.map((item) => ({
+          meta: item.meta,
+          name: item.name,
+          path: item.path,
+        }))
+      : undefined) as RouteRecordNormalized[],
+  };
 }
 
 // https://github.com/vant-ui/vant/issues/8302
 type EventShim = {
-   new (...args: any[]): {
-      $props: {
-         onClick?: (...args: any[]) => void;
-      };
-   };
+  new (...args: any[]): {
+    $props: {
+      onClick?: (...args: any[]) => void;
+    };
+  };
 };
 
 export type WithInstall<T> = T & {
-   install(app: App): void;
+  install(app: App): void;
 } & EventShim;
 
 export type CustomComponent = Component & { displayName?: string };
 
 export const withInstall = <T extends CustomComponent>(component: T, alias?: string) => {
-   (component as Record<string, unknown>).install = (app: App) => {
-      const compName = component.name || component.displayName;
-      if (!compName) return;
-      app.component(compName, component);
-      if (alias) {
-         app.config.globalProperties[alias] = component;
-      }
-   };
-   return component as WithInstall<T>;
+  (component as Record<string, unknown>).install = (app: App) => {
+    const compName = component.name || component.displayName;
+    if (!compName) return;
+    app.component(compName, component);
+    if (alias) {
+      app.config.globalProperties[alias] = component;
+    }
+  };
+  return component as WithInstall<T>;
 };

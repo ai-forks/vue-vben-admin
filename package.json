@@ -32,7 +32,7 @@
       "prepare": "husky install",
       "gen:icon": "esno ./build/generate/icon/index.ts",
       "format": "run-s format:*",
-      "format:js": " prettier --write   \"src/**/*.{ts,js}\"  "
+      "format:js": " prettier --write   \"src/**/*.{ts,js,vue}\"  "
    },
    "dependencies": {
       "@ant-design/colors": "^6.0.0",
