@@ -1,17 +1,17 @@
-import { BasicPageParams, BasicFetchResult } from '/@/api/model/baseModel';
+import { BasicPageParams, BasicFetchResult } from "/@/api/model/baseModel";
 /**
  * @description: Request list interface parameters
  */
 export type DemoParams = BasicPageParams;
 
 export interface DemoListItem {
-  id: string;
-  beginTime: string;
-  endTime: string;
-  address: string;
-  name: string;
-  no: number;
-  status: number;
+   id: string;
+   beginTime: string;
+   endTime: string;
+   address: string;
+   name: string;
+   no: number;
+   status: number;
 }
 
 /**
