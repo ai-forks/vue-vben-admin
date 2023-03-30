@@ -21,7 +21,7 @@ import { isDevMode } from "./utils/env";
 if (isDevMode()) {
   import("ant-design-vue/es/style");
 }
-
+console.info("buffer", Buffer.from("hello world!!!").toString());
 async function bootstrap() {
   const app = createApp(App);
 

@@ -17,16 +17,15 @@ import { configImageminPlugin } from "./imagemin";
 import { configSvgIconsPlugin } from "./svgSprite";
 import path from "path";
 import inject from "@rollup/plugin-inject";
-import resolve from "@rollup/plugin-node-resolve";
 
 export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
   const { VITE_USE_IMAGEMIN, VITE_USE_MOCK, VITE_LEGACY, VITE_BUILD_COMPRESS, VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE } = viteEnv;
   console.info("viteEnv", viteEnv, path.resolve("./src/adapter/buffer.ts"));
   const vitePlugins: (PluginOption | PluginOption[])[] = [
-    <any>resolve(),
-    inject({
+    //<any>resolve(),
+    <any>inject({
       Buffer: path.resolve("./src/adapter/buffer.ts"),
-    }),
+    }), 
     // have to
     vue(),
     // have to
